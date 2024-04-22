@@ -1,7 +1,7 @@
 {
   "short_name": "Game Boards",
   "name": "Portable Game Boards",
-  "start_url": ".",
+  "start_url": "./portable-game-boards",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
