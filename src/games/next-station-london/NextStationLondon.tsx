@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { colorMap, getInitialConfig, getRoundCards } from "./utils";
 import PlayerSide from "./PlayerSide";
 import GameBonusCard from "./GameBonusCard";
 import { GameBonus, StationCard } from "./types";
-import Cards from "./Cards";
+import Cards, { CardsRef } from "./Cards";
 import useModal from "../../hooks/useModal";
 import NextRoundModal from "./NextRoundModal";
 import BonusHintModal from "./BonusHintModal";
@@ -16,18 +16,34 @@ const NextStationLondon = () => {
   const [round, setRound] = useState(1);
   const [cards, setCards] = useState<StationCard[]>([]);
   const [redCardsCount, setRedCardsCount] = useState(0);
+  const [redCardsHistory, setRedCardsHistory] = useState<number[]>([0]);
+  const cardsRef = useRef<CardsRef>(null);
   const { showModal, hideModal } = useModal();
 
   useEffect(() => {
     setCards(getRoundCards());
     setRedCardsCount(0);
+    setRedCardsHistory([0]);
   }, [round]);
 
   const isLatestRound = round === 4;
+  
+  const handleUndo = () => {
+    if (cardsRef.current?.canUndo()) {
+      const success = cardsRef.current.undo();
+      if (success && redCardsHistory.length > 1) {
+        const previousRedCount = redCardsHistory[redCardsHistory.length - 2];
+        setRedCardsCount(previousRedCount);
+        setRedCardsHistory(redCardsHistory.slice(0, -1));
+      }
+    }
+  };
+
   const onCardClicked = (discoveredCard: StationCard) => {
     if (discoveredCard.type === "red") {
       const newRedCardsCount = redCardsCount + 1;
       setRedCardsCount(newRedCardsCount);
+      setRedCardsHistory([...redCardsHistory, newRedCardsCount]);
       if (newRedCardsCount === 5) {
         showModal(
           <NextRoundModal
@@ -37,6 +53,8 @@ const NextStationLondon = () => {
           />
         );
       }
+    } else {
+      setRedCardsHistory([...redCardsHistory, redCardsCount]);
     }
   };
 
@@ -67,8 +85,17 @@ const NextStationLondon = () => {
       </Button>
       <div style={styles.gameboard}>
         <div style={styles.center}>
-        <h2>Round: {round}</h2>
-        <Cards cards={cards} onClick={onCardClicked} />
+        <div style={styles.roundHeader}>
+          <h2>Round: {round}</h2>
+          <button
+            onClick={handleUndo}
+            style={styles.undoButton}
+            title="Retour en arrière"
+          >
+            ↶
+          </button>
+        </div>
+        <Cards ref={cardsRef} cards={cards} onClick={onCardClicked} />
         <div style={styles.bonusesAndRedCount}>
           <GameBonusCard
             bonus={config.gameBonuses[0]}
@@ -138,6 +165,28 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     flexDirection: "column",
     gap: "1rem",
+  },
+  roundHeader: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "1.5rem",
+  },
+  undoButton: {
+    width: "36px",
+    height: "36px",
+    borderRadius: "50%",
+    backgroundColor: "#4CAF50",
+    color: "white",
+    border: "none",
+    fontSize: "1.5rem",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontWeight: "bold",
+    transition: "all 0.2s ease",
+    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
   },
   playerTop: {
     gridArea: "topPlayer",

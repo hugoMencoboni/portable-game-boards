@@ -1,6 +1,6 @@
 import CardsStack from "../../components/CardsStack";
 import { StationCard } from "./types";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useImperativeHandle, forwardRef } from "react";
 import EmptyStack from "./EmptyStack";
 import useWidthBreakpoint, {
   breakPoints,
@@ -12,8 +12,14 @@ interface CardsProps {
   onClick: (discoveredCard: StationCard) => void;
 }
 
-const Cards = ({ cards, onClick }: CardsProps) => {
+export interface CardsRef {
+  undo: () => boolean;
+  canUndo: () => boolean;
+}
+
+const Cards = forwardRef<CardsRef, CardsProps>(({ cards, onClick }, ref) => {
   const [discoveredCard, setDiscoveredCard] = useState<StationCard[]>([]);
+  const [history, setHistory] = useState<StationCard[][]>([[]]);
   const width = useWidthBreakpoint();
   const cardsSize =
     width <= breakPoints.md
@@ -22,7 +28,22 @@ const Cards = ({ cards, onClick }: CardsProps) => {
 
   useEffect(() => {
     setDiscoveredCard([]);
+    setHistory([[]]);
   }, [cards]);
+
+  useImperativeHandle(ref, () => ({
+    undo: () => {
+      if (history.length > 1) {
+        const previousState = history[history.length - 2];
+        const removedCard = discoveredCard[discoveredCard.length - 1];
+        setDiscoveredCard(previousState);
+        setHistory(history.slice(0, -1));
+        return removedCard !== undefined;
+      }
+      return false;
+    },
+    canUndo: () => history.length > 1,
+  }));
 
   const nonDiscoveredCards = useMemo(() => {
     return cards.filter((card) => !discoveredCard.includes(card));
@@ -36,7 +57,9 @@ const Cards = ({ cards, onClick }: CardsProps) => {
         size={cardsSize}
         onClick={() => {
           if (index === nonDiscoveredCards.length - 1) {
-            setDiscoveredCard([...discoveredCard, card]);
+            const newDiscoveredCards = [...discoveredCard, card];
+            setDiscoveredCard(newDiscoveredCards);
+            setHistory([...history, newDiscoveredCards]);
             onClick(card);
           }
         }}
@@ -66,7 +89,9 @@ const Cards = ({ cards, onClick }: CardsProps) => {
       />
     </div>
   );
-};
+});
+
+Cards.displayName = "Cards";
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
