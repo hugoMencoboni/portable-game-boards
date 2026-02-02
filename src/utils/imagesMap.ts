@@ -1,6 +1,16 @@
 export interface ImagesMap {
   "le-murmure-des-feuilles": {
     button: string;
+    rules: {
+      page1: string;
+      page2: string;
+      page3: string;
+      page4: string;
+      page5: string;
+      page6: string;
+      page7: string;
+      page8: string;
+    };
   };
   "next-station-london": {
     rules: {
@@ -59,6 +69,14 @@ export interface ImagesMap {
 }
 
 // Auto-generated imports
+import { encryptedData as le_murmure_des_feuilles_rules_page8 } from '../assets/encrypted/le-murmure-des-feuilles__rules__page8';
+import { encryptedData as le_murmure_des_feuilles_rules_page7 } from '../assets/encrypted/le-murmure-des-feuilles__rules__page7';
+import { encryptedData as le_murmure_des_feuilles_rules_page6 } from '../assets/encrypted/le-murmure-des-feuilles__rules__page6';
+import { encryptedData as le_murmure_des_feuilles_rules_page5 } from '../assets/encrypted/le-murmure-des-feuilles__rules__page5';
+import { encryptedData as le_murmure_des_feuilles_rules_page4 } from '../assets/encrypted/le-murmure-des-feuilles__rules__page4';
+import { encryptedData as le_murmure_des_feuilles_rules_page3 } from '../assets/encrypted/le-murmure-des-feuilles__rules__page3';
+import { encryptedData as le_murmure_des_feuilles_rules_page2 } from '../assets/encrypted/le-murmure-des-feuilles__rules__page2';
+import { encryptedData as le_murmure_des_feuilles_rules_page1 } from '../assets/encrypted/le-murmure-des-feuilles__rules__page1';
 import { encryptedData as next_station_london_rules_multiplierExample } from '../assets/encrypted/next-station-london__rules__multiplierExample';
 import { encryptedData as next_station_london_rules_totalExample } from '../assets/encrypted/next-station-london__rules__totalExample';
 import { encryptedData as next_station_london_rules_touristExample } from '../assets/encrypted/next-station-london__rules__touristExample';
@@ -108,6 +126,16 @@ import { encryptedData as next_station_london_rules_validInvalid } from '../asse
 export const encryptedImageMap: ImagesMap = {
   "le-murmure-des-feuilles": {
     button: le_murmure_des_feuilles_button_button,
+    rules: {
+      page1: le_murmure_des_feuilles_rules_page1,
+      page2: le_murmure_des_feuilles_rules_page2,
+      page3: le_murmure_des_feuilles_rules_page3,
+      page4: le_murmure_des_feuilles_rules_page4,
+      page5: le_murmure_des_feuilles_rules_page5,
+      page6: le_murmure_des_feuilles_rules_page6,
+      page7: le_murmure_des_feuilles_rules_page7,
+      page8: le_murmure_des_feuilles_rules_page8,
+    },
   },
   "next-station-london": {
     rules: {
