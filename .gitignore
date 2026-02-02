@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# temporary images to encrypt (folder tracked, contents ignored)
+/assets/to-encrypt/*
+!/assets/to-encrypt/.gitkeep
+!/assets/to-encrypt/README.md

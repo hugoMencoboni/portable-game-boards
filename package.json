@@ -4,34 +4,19 @@
   "homepage": "https://hugomencoboni.github.io/portable-game-boards",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.83",
-    "@types/react": "^18.2.58",
-    "@types/react-dom": "^18.2.19",
     "crypto-js": "^4.2.0",
-    "lodash.get": "^4.4.2",
-    "lodash.set": "^4.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
     "zustand": "^4.5.2"
   },
   "scripts": {
-    "start": "set HTTPS=true&&react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "encrypt-image": "node scripts/encrypt-image.mjs",
+    "encrypt:help": "node scripts/encrypt-image.mjs"
   },
   "browserslist": {
     "production": [
@@ -46,9 +31,22 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/crypto-js": "^4.2.2",
-    "@types/lodash.get": "^4.4.9",
-    "@types/lodash.set": "^4.3.9",
-    "tailwindcss": "^3.4.1"
+    "@types/node": "^22.10.5",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-basic-ssl": "^1.1.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/ui": "^4.0.18",
+    "autoprefixer": "^10.4.20",
+    "jsdom": "^25.0.1",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7",
+    "vitest": "^4.0.18"
   }
 }

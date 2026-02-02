@@ -4,8 +4,7 @@ import KeyModal from "./KeyModal";
 import useEncryptStore from "../../hooks/useEncryptStore";
 import { ImagesMap, encryptedImageMap } from "../../utils/imagesMap";
 import useImagesMap from "../../hooks/useImagesMap";
-import set from "lodash.set";
-import get from "lodash.get";
+import { getNestedProperty, setNestedProperty } from "../../utils/object-utils";
 
 interface EncryptWrapperProps {
   children: React.ReactNode;
@@ -18,13 +17,13 @@ const decryptImageMap = (
 
   const decryptRecursive = (path?: string) => {
     const map = path
-      ? get(encryptedImageMap, path as string)
+      ? getNestedProperty(encryptedImageMap, path as string)
       : encryptedImageMap;
     Object.entries(map).forEach(([key, value]) => {
       const valuePath = path ? path + "." + key : key;
       if (typeof value === "string") {
         const decryptedSrc = value ? decrypt(value) : value;
-        set(decryptedImageMap, valuePath, decryptedSrc);
+        setNestedProperty(decryptedImageMap, valuePath, decryptedSrc);
       } else if (typeof value === "object" && value !== null) {
         decryptRecursive(valuePath);
       }

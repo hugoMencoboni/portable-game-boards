@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { colorMap, getInitialConfig, getRoundCards } from "./utils";
 import PlayerSide from "./PlayerSide";
 import GameBonusCard from "./GameBonusCard";
-import { StationCard } from "./types";
+import { GameBonus, StationCard } from "./types";
 import Cards from "./Cards";
 import useModal from "../../hooks/useModal";
 import NextRoundModal from "./NextRoundModal";
+import BonusHintModal from "./BonusHintModal";
+import RulesModal from "./RulesModal";
+import { gameBonusHints } from "./bonusHints";
+import Button from "../../components/Button";
 
 const NextStationLondon = () => {
   const [config, setConfig] = useState(getInitialConfig());
@@ -46,16 +50,35 @@ const NextStationLondon = () => {
     }
   };
 
+  const handleBonusCardClick = (bonus: GameBonus) => {
+    const hint = gameBonusHints[bonus];
+    showModal(<BonusHintModal hint={hint} onClose={hideModal} />);
+  };
+
+  const handleRulesClick = () => {
+    showModal(<RulesModal onClose={hideModal} />);
+  };
+
   const roundIndex = -1 * round + 1;
   return (
-    <div style={styles.gameboard}>
-      <div style={styles.center}>
+    <div style={styles.container}>
+      <Button onClick={handleRulesClick} style={styles.rulesButton}>
+        📖 Règles
+      </Button>
+      <div style={styles.gameboard}>
+        <div style={styles.center}>
         <h2>Round: {round}</h2>
         <Cards cards={cards} onClick={onCardClicked} />
         <div style={styles.bonusesAndRedCount}>
-          <GameBonusCard bonus={config.gameBonuses[0]} />
+          <GameBonusCard
+            bonus={config.gameBonuses[0]}
+            onClick={() => handleBonusCardClick(config.gameBonuses[0])}
+          />
           <div style={styles.redCount}>{redCardsCount}</div>
-          <GameBonusCard bonus={config.gameBonuses[1]} />
+          <GameBonusCard
+            bonus={config.gameBonuses[1]}
+            onClick={() => handleBonusCardClick(config.gameBonuses[1])}
+          />
         </div>
       </div>
       <PlayerSide
@@ -74,14 +97,20 @@ const NextStationLondon = () => {
         config={config.rounds[Math.abs(roundIndex - 3) % 4]}
         style={styles.playerLeft}
       />
+      </div>
     </div>
   );
 };
 
 const styles: Record<string, React.CSSProperties> = {
-  gameboard: {
+  container: {
+    position: "relative",
     width: "100%",
     flex: "1 1 100%",
+  },
+  gameboard: {
+    width: "100%",
+    height: "100%",
     padding: "1rem",
     display: "grid",
     gap: "1rem",
@@ -92,6 +121,14 @@ const styles: Record<string, React.CSSProperties> = {
     'leftPlayer  center      rightPlayer'
     '.           bottomPlayer .'
     `,
+  },
+  rulesButton: {
+    position: "absolute",
+    top: "1rem",
+    right: "1rem",
+    fontSize: "1.4rem",
+    padding: "0.6rem 1.2rem",
+    zIndex: 10,
   },
   center: {
     gridArea: "center",

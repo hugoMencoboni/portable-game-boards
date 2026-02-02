@@ -7,6 +7,7 @@ import useImage from "../../hooks/useImage";
 
 interface GameBonusCardProps {
   bonus: GameBonus;
+  onClick?: () => void;
 }
 
 const bonusSrcMap: Record<GameBonus, string> = {
@@ -18,13 +19,15 @@ const bonusSrcMap: Record<GameBonus, string> = {
     "next-station-london.game-bonuses.9-stations-in-an-area",
 };
 
-const GameBonusCard = ({ bonus }: GameBonusCardProps) => {
+const GameBonusCard = ({ bonus, onClick }: GameBonusCardProps) => {
   const width = useWidthBreakpoint();
   const size = width <= breakPoints.md ? "50px" : "75px";
   const imgSrc = useImage(bonusSrcMap[bonus]);
+  
   return (
     <Card
       size={{ width: size, height: size }}
+      onClick={onClick}
       recto={
         <div
           style={{

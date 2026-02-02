@@ -21,10 +21,9 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     backdropFilter: "blur(2px)",
+    zIndex: 1000,
   },
   innerContainer: {
-    backgroundColor: "white",
-    borderRadius: "4px",
     boxShadow: "0 0 1rem rgba(0, 0, 0, 0.5)",
   },
 };
